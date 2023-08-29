@@ -1,0 +1,65 @@
+
+udshell-user@ip-10-4-15-251 ~]$ kubectl get po
+NAME                         READY   STATUS    RESTARTS   AGE
+canary-v1-78fd9f7474-2qtr6   1/1     Running   0          108s
+canary-v1-78fd9f7474-zk8cb   1/1     Running   0          108s
+canary-v2-f66b6c74b-fn249    1/1     Running   0          26s
+canary-v2-f66b6c74b-r4bgn    1/1     Running   0          26s
+[cloudshell-user@ip-10-4-15-251 ~]$ kubectl get svc
+NAME         TYPE           CLUSTER-IP       EXTERNAL-IP                                                                     PORT(S)        AGE
+blue-svc     LoadBalancer   172.20.116.138   acb2707a3e0be4b9b857c6e63fe42e27-c3d8c8603bb3cf37.elb.us-east-2.amazonaws.com   80:30089/TCP   95m
+canary-svc   ClusterIP      172.20.58.164    <none>                                                                          80/TCP         4m38s
+[cloudshell-user@ip-10-4-15-251 ~]$ kubectl run debug --rm -i --tty --image nicolaka/netshoot -- /bin/bash
+If you don't see a command prompt, try pressing enter.
+debug:~# curl 172.20.58.164 
+<html>
+<h1>This is version 2</h1>
+</html>
+debug:~# curl 172.20.58.164 
+<html>
+<h1>This is version 1</h1>
+</html>
+debug:~# curl 172.20.58.164 
+<html>
+<h1>This is version 1</h1>
+</html>
+debug:~# curl 172.20.58.164 
+<html>
+<h1>This is version 2</h1>
+</html>
+debug:~# curl 172.20.58.164 
+<html>
+<h1>This is version 2</h1>
+</html>
+debug:~# curl 172.20.58.164 
+<html>
+<h1>This is version 1</h1>
+</html>
+debug:~# curl 172.20.58.164 
+<html>
+<h1>This is version 1</h1>
+</html>
+debug:~# curl 172.20.58.164 
+<html>
+<h1>This is version 2</h1>
+</html>
+debug:~# curl 172.20.58.164 
+<html>
+<h1>This is version 2</h1>
+</html>
+debug:~# curl 172.20.58.164 
+<html>
+<h1>This is version 2</h1>
+</html>
+debug:~# curl 172.20.58.164 
+<html>
+<h1>This is version 1</h1>
+</html>
+debug:~# curl 172.20.58.164 
+<html>
+<h1>This is version 2</h1>
+</html>
+debug:~# exit
+exit
+Session ended, resume using 'kubectl attach debug -c debug -i -t' command when the pod is running
+pod "debug" deleted

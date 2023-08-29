@@ -1,0 +1,61 @@
+
+udshell-user@ip-10-4-15-251 starter]$ kubectl get pods --all-namespaces
+NAMESPACE     NAME                         READY   STATUS    RESTARTS   AGE
+kube-system   aws-node-5j8xw               1/1     Running   0          101m
+kube-system   aws-node-zpnrw               1/1     Running   0          101m
+kube-system   coredns-647484dc8b-4fsq7     1/1     Running   0          105m
+kube-system   coredns-647484dc8b-wdrdm     1/1     Running   0          105m
+kube-system   kube-proxy-gnswg             1/1     Running   0          101m
+kube-system   kube-proxy-qx57x             1/1     Running   0          101m
+udacity       canary-v1-78fd9f7474-2qtr6   1/1     Running   0          7m39s
+udacity       canary-v1-78fd9f7474-zk8cb   1/1     Running   0          7m39s
+udacity       canary-v2-f66b6c74b-fn249    1/1     Running   0          6m17s
+udacity       canary-v2-f66b6c74b-r4bgn    1/1     Running   0          6m17s
+[cloudshell-user@ip-10-4-15-251 starter]$ kubectl get deploy --all-namespaces
+NAMESPACE     NAME        READY   UP-TO-DATE   AVAILABLE   AGE
+kube-system   coredns     2/2     2            2           106m
+udacity       canary-v1   2/2     2            2           7m51s
+udacity       canary-v2   2/2     2            2           6m34s
+[cloudshell-user@ip-10-4-15-251 starter]$ kubectl get svc --all-namespaces
+NAMESPACE     NAME         TYPE           CLUSTER-IP       EXTERNAL-IP                                                                     PORT(S)         AGE
+default       kubernetes   ClusterIP      172.20.0.1       <none>                                                                          443/TCP         106m
+kube-system   kube-dns     ClusterIP      172.20.0.10      <none>                                                                          53/UDP,53/TCP   106m
+udacity       blue-svc     LoadBalancer   172.20.116.138   acb2707a3e0be4b9b857c6e63fe42e27-c3d8c8603bb3cf37.elb.us-east-2.amazonaws.com   80:30089/TCP    101m
+udacity       canary-svc   ClusterIP      172.20.58.164    <none>                                                                          80/TCP          10m
+[cloudshell-user@ip-10-4-15-251 starter]$ 
+------------------------------------------------------------------------------------
+[cloudshell-user@ip-10-4-15-251 canary]$ ./canary.sh 
+deployment.apps/canary-v2 created
+V1 PODS: 4
+V2 PODS: 0
+deployment.apps/canary-v2 scaled
+deployment.apps/canary-v1 scaled
+Waiting for deployment "canary-v2" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "canary-v2" rollout to finish: 0 of 2 updated replicas are available...
+Waiting for deployment "canary-v2" rollout to finish: 0 of 2 updated replicas are available...
+deployment "canary-v2" successfully rolled out
+
+Canary deployment of 2 replicas successful!
+Continue deployment? (y/n) y
+continuing deployment
+V1 PODS: 2
+V2 PODS: 2
+deployment.apps/canary-v2 scaled
+deployment.apps/canary-v1 scaled
+Waiting for deployment "canary-v2" rollout to finish: 2 of 4 updated replicas are available...
+Waiting for deployment "canary-v2" rollout to finish: 2 of 4 updated replicas are available...
+deployment "canary-v2" successfully rolled out
+Canary deployment of 2 replicas successful!
+Continue deployment? (y/n) y
+continuing deployment
+Canary deployment of v2 successful
+[cloudshell-user@ip-10-4-15-251 canary]$ ls
+canary.sh  canary-svc.yml  canary-v1.yml  canary-v2.yml  index_v1_html.yml  index_v2_html.yml
+[cloudshell-user@ip-10-4-15-251 canary]$ vim canary.txt
+[cloudshell-user@ip-10-4-15-251 canary]$ vim canary2.txt
+[cloudshell-user@ip-10-4-15-251 canary]$ kubectl get po
+NAME                        READY   STATUS    RESTARTS   AGE
+canary-v2-f66b6c74b-fn249   1/1     Running   0          10m
+canary-v2-f66b6c74b-nmk2d   1/1     Running   0          2m23s
+canary-v2-f66b6c74b-r4bgn   1/1     Running   0          10m
+canary-v2-f66b6c74b-t2h4g   1/1     Running   0          2m23s
